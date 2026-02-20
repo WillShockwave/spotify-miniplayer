@@ -92,8 +92,8 @@ var SpotifyMiniPlayer = (function () {
     // Insert into the browser chrome
     document.getElementById("browser").appendChild(popup);
 
-    // Apply initial position
-    applyCornerPosition(getDefaultCorner());
+    // Apply initial position (no animation on load)
+    applyCornerPosition(getDefaultCorner(), false);
 
     // Set up preference observer to rebuild UI on mode change
     Services.prefs.addObserver("mod.spotify-miniplayer.control_mode", {
@@ -682,39 +682,51 @@ var SpotifyMiniPlayer = (function () {
     applyCornerPosition(corner);
   }
 
-  function applyCornerPosition(corner) {
+  function applyCornerPosition(corner, animate) {
     if (!popup) return;
 
     const margin = 16;
+    const rect = popup.getBoundingClientRect();
+    const viewW = window.innerWidth;
+    const viewH = window.innerHeight;
+    const popW = rect.width || 320;
+    const popH = rect.height || 80;
 
-    // Enable spring transition
-    popup.style.transition = "all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)";
-
-    // Reset positioning
-    popup.style.right = "auto";
-    popup.style.bottom = "auto";
-    popup.style.left = "auto";
-    popup.style.top = "auto";
+    let targetX, targetY;
 
     switch (corner) {
       case "top-left":
-        popup.style.left = `${margin}px`;
-        popup.style.top = `${margin}px`;
+        targetX = margin;
+        targetY = margin;
         break;
       case "top-right":
-        popup.style.right = `${margin}px`;
-        popup.style.top = `${margin}px`;
+        targetX = viewW - popW - margin;
+        targetY = margin;
         break;
       case "bottom-left":
-        popup.style.left = `${margin}px`;
-        popup.style.bottom = `${margin}px`;
+        targetX = margin;
+        targetY = viewH - popH - margin;
         break;
       case "bottom-right":
       default:
-        popup.style.right = `${margin}px`;
-        popup.style.bottom = `${margin}px`;
+        targetX = viewW - popW - margin;
+        targetY = viewH - popH - margin;
         break;
     }
+
+    // Always use left/top so CSS transitions can animate
+    popup.style.right = "auto";
+    popup.style.bottom = "auto";
+
+    if (animate !== false) {
+      // Spring transition
+      popup.style.transition = "left 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)";
+    } else {
+      popup.style.transition = "none";
+    }
+
+    popup.style.left = `${targetX}px`;
+    popup.style.top = `${targetY}px`;
   }
 
   // --- Auth Callbacks ---
