@@ -5,7 +5,7 @@ var SpotifyAPI = (function () {
   "use strict";
 
   const CLIENT_ID = "9b6ff81687ce4a12951ef2db101ffe07";
-  const REDIRECT_URI = "http://localhost:8888/callback";
+  const REDIRECT_URI = "http://127.0.0.1:8000/callback";
   const SCOPES = [
     "user-read-playback-state",
     "user-modify-playback-state",
