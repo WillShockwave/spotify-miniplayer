@@ -51,6 +51,14 @@ var SpotifyMiniPlayer = (function () {
     return getPref("mod.spotify-miniplayer.opacity", "0.85");
   }
 
+  function getGlassStyle() {
+    return getPref("mod.spotify-miniplayer.glass_style", "acrylic");
+  }
+
+  function shouldLaunchSpotify() {
+    return getBoolPref("mod.spotify-miniplayer.launch_spotify", true);
+  }
+
   // --- SVG Icons ---
 
   const ICONS = {
@@ -97,6 +105,12 @@ var SpotifyMiniPlayer = (function () {
         popup.style.setProperty("--smp-opacity", getOpacity());
       },
     });
+    Services.prefs.addObserver("mod.spotify-miniplayer.glass_style", {
+      observe() {
+        // Remove old glass classes, apply new one
+        popup.className = popup.className.replace(/smp-glass-\S+/g, "") + ` smp-glass-${getGlassStyle()}`;
+      },
+    });
   }
 
   function updatePopupContent() {
@@ -104,7 +118,7 @@ var SpotifyMiniPlayer = (function () {
 
     const mode = getControlMode();
     popup.innerHTML = "";
-    popup.className = `smp-mode-${mode}`;
+    popup.className = `smp-mode-${mode} smp-glass-${getGlassStyle()}`;
     popup.style.setProperty("--smp-opacity", getOpacity());
 
     if (mode === "embedded") {
@@ -119,6 +133,60 @@ var SpotifyMiniPlayer = (function () {
     popup.appendChild(pinBtn);
 
     setupDrag();
+  }
+
+  async function handlePlayClick() {
+    try {
+      const state = await SpotifyAPI.getPlaybackState();
+
+      if (state && state.is_playing) {
+        // Currently playing — pause
+        await SpotifyAPI.pause();
+      } else if (state && state.device) {
+        // Paused but has an active device — resume
+        await SpotifyAPI.play();
+      } else if (shouldLaunchSpotify()) {
+        // No active device — launch Spotify via URI, then retry play
+        launchSpotifyApp();
+        // Wait for Spotify to start and register as a device
+        let retries = 0;
+        const tryPlay = async () => {
+          retries++;
+          const s = await SpotifyAPI.getPlaybackState();
+          if (s && s.device) {
+            await SpotifyAPI.play();
+            pollSoon();
+          } else if (retries < 10) {
+            setTimeout(tryPlay, 1500);
+          }
+        };
+        setTimeout(tryPlay, 2000);
+        return;
+      }
+      pollSoon();
+    } catch (err) {
+      console.warn("[SpotifyMiniPlayer] Play error:", err.message);
+      // If no device, try launching Spotify
+      if (shouldLaunchSpotify() && err.message.includes("404")) {
+        launchSpotifyApp();
+      }
+    }
+  }
+
+  function launchSpotifyApp() {
+    try {
+      // Open spotify: URI which launches the desktop app
+      const uri = Services.io.newURI("spotify:");
+      const handler = Cc["@mozilla.org/uriloader/external-protocol-service;1"]
+        .getService(Ci.nsIExternalProtocolService);
+      handler.loadURI(uri);
+    } catch (e) {
+      console.warn("[SpotifyMiniPlayer] Could not launch Spotify:", e.message);
+      // Fallback: open web player
+      window.gBrowser.addTab("https://open.spotify.com", {
+        triggeringPrincipal: Services.scriptSecurityManager.getSystemPrincipal(),
+      });
+    }
   }
 
   function buildPlayerMode(isFull) {
@@ -156,7 +224,7 @@ var SpotifyMiniPlayer = (function () {
     }
 
     controls.appendChild(createButton("smp-prev-btn", ICONS.prev, () => SpotifyAPI.previous().then(pollSoon)));
-    controls.appendChild(createButton("smp-play-btn", ICONS.play, () => SpotifyAPI.togglePlayback().then(pollSoon)));
+    controls.appendChild(createButton("smp-play-btn", ICONS.play, handlePlayClick));
     controls.appendChild(createButton("smp-next-btn", ICONS.next, () => SpotifyAPI.next().then(pollSoon)));
 
     if (isFull) {

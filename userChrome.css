@@ -15,8 +15,10 @@
   --smp-radius: 24px;
   --smp-bg: rgba(30, 30, 30, var(--smp-opacity));
   --smp-text: #ffffff;
-  --smp-text-secondary: rgba(255, 255, 255, 0.65);
-  --smp-border: rgba(255, 255, 255, 0.08);
+  --smp-text-secondary: rgba(255, 255, 255, 0.7);
+  --smp-btn-bg: rgba(255, 255, 255, 0.1);
+  --smp-btn-hover: rgba(255, 255, 255, 0.2);
+  --smp-border: rgba(255, 255, 255, 0.12);
 
   position: fixed;
   z-index: 2147483646;
@@ -28,7 +30,7 @@
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.35),
     0 2px 8px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   color: var(--smp-text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 13px;
@@ -41,6 +43,55 @@
   transition:
     opacity 0.25s ease,
     transform 0.25s ease;
+}
+
+/* --- Glass Style Variants --- */
+
+/* Acrylic (default) */
+#spotify-miniplayer-popup.smp-glass-acrylic {
+  --smp-bg: rgba(30, 30, 30, var(--smp-opacity));
+  backdrop-filter: blur(20px) saturate(1.4);
+  -moz-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid var(--smp-border);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Liquid Glass */
+#spotify-miniplayer-popup.smp-glass-liquid-glass {
+  --smp-bg: rgba(30, 30, 30, calc(var(--smp-opacity) * 0.5));
+  backdrop-filter: blur(40px) saturate(1.8) brightness(1.1);
+  -moz-backdrop-filter: blur(40px) saturate(1.8) brightness(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.25),
+    0 2px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Solid */
+#spotify-miniplayer-popup.smp-glass-solid {
+  --smp-bg: rgba(24, 24, 24, 1);
+  backdrop-filter: none;
+  -moz-backdrop-filter: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Fully Transparent */
+#spotify-miniplayer-popup.smp-glass-transparent {
+  --smp-bg: transparent;
+  backdrop-filter: blur(30px) saturate(1.6);
+  -moz-backdrop-filter: blur(30px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 #spotify-miniplayer-popup.smp-visible {
@@ -71,8 +122,27 @@
   #spotify-miniplayer-popup {
     --smp-bg: rgba(255, 255, 255, var(--smp-opacity));
     --smp-text: #191414;
-    --smp-text-secondary: rgba(25, 20, 20, 0.6);
-    --smp-border: rgba(0, 0, 0, 0.08);
+    --smp-text-secondary: rgba(25, 20, 20, 0.65);
+    --smp-btn-bg: rgba(0, 0, 0, 0.07);
+    --smp-btn-hover: rgba(0, 0, 0, 0.13);
+    --smp-border: rgba(0, 0, 0, 0.1);
+  }
+
+  #spotify-miniplayer-popup.smp-glass-acrylic {
+    --smp-bg: rgba(255, 255, 255, var(--smp-opacity));
+  }
+
+  #spotify-miniplayer-popup.smp-glass-liquid-glass {
+    --smp-bg: rgba(255, 255, 255, calc(var(--smp-opacity) * 0.5));
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  #spotify-miniplayer-popup.smp-glass-solid {
+    --smp-bg: rgba(248, 248, 248, 1);
+  }
+
+  #spotify-miniplayer-popup.smp-glass-transparent {
+    --smp-bg: transparent;
   }
 }
 
@@ -83,13 +153,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  padding: 10px 14px;
-  gap: 10px;
-  width: 320px;
+  padding: 12px 16px;
+  gap: 12px;
+  width: 340px;
 }
 
 #spotify-miniplayer-popup.smp-mode-full {
-  width: 340px;
+  width: 360px;
   flex-direction: row;
   flex-wrap: wrap;
 }
@@ -97,8 +167,8 @@
 /* --- Album Art --- */
 
 .smp-art {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   flex-shrink: 0;
   border-radius: 12px;
   overflow: hidden;
@@ -130,16 +200,16 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .smp-artist-name {
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--smp-text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 /* --- Playback Controls --- */
@@ -147,18 +217,18 @@
 .smp-controls {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   flex-shrink: 0;
 }
 
 .smp-controls button,
 .smp-extras button {
   appearance: none;
-  background: none;
+  background: var(--smp-btn-bg);
   border: none;
   color: var(--smp-text);
   cursor: pointer;
-  padding: 6px;
+  padding: 8px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -168,35 +238,39 @@
 
 .smp-controls button:hover,
 .smp-extras button:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-@media (prefers-color-scheme: light) {
-  .smp-controls button:hover,
-  .smp-extras button:hover {
-    background: rgba(0, 0, 0, 0.06);
-  }
+  background: var(--smp-btn-hover);
 }
 
 .smp-controls button:active {
-  transform: scale(0.9);
+  transform: scale(0.88);
 }
 
 .smp-controls button svg,
 .smp-extras button svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
-/* Play button is slightly larger */
+/* Play button is larger and accented */
+.smp-play-btn {
+  background: var(--smp-green) !important;
+  color: #000 !important;
+  padding: 10px !important;
+}
+
+.smp-play-btn:hover {
+  background: var(--smp-green-hover) !important;
+}
+
 .smp-play-btn svg {
-  width: 22px;
-  height: 22px;
+  width: 24px !important;
+  height: 24px !important;
 }
 
 /* Active state for shuffle/repeat */
 .smp-controls button.smp-active {
   color: var(--smp-green);
+  background: rgba(29, 185, 84, 0.15);
 }
 
 /* --- Progress Bar --- */
@@ -205,7 +279,7 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   padding-top: 2px;
 }
 
@@ -213,14 +287,14 @@
   flex: 1;
   height: 4px;
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
   overflow: hidden;
   position: relative;
 }
 
 @media (prefers-color-scheme: light) {
   .smp-progress-bar {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -248,7 +322,7 @@
   color: var(--smp-text-secondary);
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
-  min-width: 28px;
+  min-width: 30px;
 }
 
 .smp-time-current {
@@ -267,12 +341,13 @@
 }
 
 .smp-like-btn.smp-liked {
-  color: var(--smp-green);
+  color: var(--smp-green) !important;
+  background: rgba(29, 185, 84, 0.15) !important;
 }
 
 .smp-like-btn svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 .smp-volume-wrap {
@@ -289,35 +364,35 @@
 }
 
 .smp-volume-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 .smp-volume-slider {
   appearance: none;
-  width: 80px;
+  width: 90px;
   height: 4px;
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
   outline: none;
   cursor: pointer;
 }
 
 @media (prefers-color-scheme: light) {
   .smp-volume-slider {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.12);
   }
 }
 
 .smp-volume-slider::-moz-range-thumb {
   appearance: none;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: var(--smp-green);
   border: none;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .smp-volume-slider::-moz-range-progress {
@@ -330,19 +405,19 @@
 
 .smp-pin-btn {
   appearance: none;
-  background: none;
+  background: var(--smp-btn-bg) !important;
   border: none;
   color: var(--smp-text-secondary);
   cursor: pointer;
   position: absolute;
-  top: 6px;
-  right: 8px;
-  padding: 4px;
+  top: 8px;
+  right: 10px;
+  padding: 5px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.15s ease, transform 0.15s ease;
+  transition: color 0.15s ease, transform 0.15s ease, background 0.15s ease;
   z-index: 10;
 }
 
@@ -353,10 +428,12 @@
 
 .smp-pin-btn:hover {
   color: var(--smp-text);
+  background: var(--smp-btn-hover) !important;
 }
 
 .smp-pinned .smp-pin-btn {
   color: var(--smp-green);
+  background: rgba(29, 185, 84, 0.15) !important;
   transform: rotate(45deg);
 }
 
@@ -419,6 +496,6 @@
 #spotify-miniplayer-popup.smp-mode-embedded .smp-pin-btn {
   top: 8px;
   right: 10px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5) !important;
   color: #fff;
 }

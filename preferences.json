@@ -11,6 +11,24 @@
     "defaultValue": "minimal"
   },
   {
+    "property": "mod.spotify-miniplayer.glass_style",
+    "label": "Background style",
+    "type": "dropdown",
+    "options": [
+      { "label": "Solid", "value": "solid" },
+      { "label": "Acrylic", "value": "acrylic" },
+      { "label": "Liquid Glass", "value": "liquid-glass" },
+      { "label": "Fully Transparent", "value": "transparent" }
+    ],
+    "defaultValue": "acrylic"
+  },
+  {
+    "property": "mod.spotify-miniplayer.opacity",
+    "label": "Background opacity (0.0 - 1.0)",
+    "type": "string",
+    "defaultValue": "0.85"
+  },
+  {
     "property": "mod.spotify-miniplayer.free_movement",
     "label": "Free movement (disable corner snapping)",
     "type": "checkbox",
@@ -29,9 +47,9 @@
     "defaultValue": "bottom-right"
   },
   {
-    "property": "mod.spotify-miniplayer.opacity",
-    "label": "Background opacity (0.0 - 1.0)",
-    "type": "string",
-    "defaultValue": "0.85"
+    "property": "mod.spotify-miniplayer.launch_spotify",
+    "label": "Open Spotify app when pressing play (if nothing is playing)",
+    "type": "checkbox",
+    "defaultValue": true
   }
 ]
