@@ -1,0 +1,37 @@
+[
+  {
+    "property": "mod.spotify-miniplayer.control_mode",
+    "label": "Control mode",
+    "type": "dropdown",
+    "options": [
+      { "label": "Minimal", "value": "minimal" },
+      { "label": "Full", "value": "full" },
+      { "label": "Embedded", "value": "embedded" }
+    ],
+    "defaultValue": "minimal"
+  },
+  {
+    "property": "mod.spotify-miniplayer.free_movement",
+    "label": "Free movement (disable corner snapping)",
+    "type": "checkbox",
+    "defaultValue": false
+  },
+  {
+    "property": "mod.spotify-miniplayer.default_corner",
+    "label": "Default corner",
+    "type": "dropdown",
+    "options": [
+      { "label": "Bottom Right", "value": "bottom-right" },
+      { "label": "Bottom Left", "value": "bottom-left" },
+      { "label": "Top Right", "value": "top-right" },
+      { "label": "Top Left", "value": "top-left" }
+    ],
+    "defaultValue": "bottom-right"
+  },
+  {
+    "property": "mod.spotify-miniplayer.opacity",
+    "label": "Background opacity (0.0 - 1.0)",
+    "type": "string",
+    "defaultValue": "0.85"
+  }
+]

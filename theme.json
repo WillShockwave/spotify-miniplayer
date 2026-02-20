@@ -1,0 +1,13 @@
+{
+  "name": "Spotify Mini-Player",
+  "description": "A draggable, pill-shaped Spotify mini-player popup with corner snapping, always-on-top pinning, and multiple control modes.",
+  "version": "1.0.0",
+  "author": "willv",
+  "style": "userChrome.css",
+  "JS": [
+    "JS/spotify-api.js",
+    "JS/spotify-miniplayer.js"
+  ],
+  "image": "",
+  "preferences": "preferences.json"
+}
