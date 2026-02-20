@@ -129,8 +129,8 @@ var SpotifyMiniPlayer = (function () {
     }
 
     // Always add pin button
-    const pinBtn = createButton("smp-pin-btn", isPinned ? ICONS.pin : ICONS.pinOff, togglePin);
-    pinBtn.title = isPinned ? "Unpin" : "Pin on top";
+    const pinBtn = createButton("smp-pin-btn", isPinned ? ICONS.pin : ICONS.pinOff, toggleClickThrough);
+    pinBtn.title = isPinned ? "Disable click-through" : "Enable click-through";
     popup.appendChild(pinBtn);
 
     setupDrag();
@@ -586,16 +586,16 @@ var SpotifyMiniPlayer = (function () {
     }
   }
 
-  // --- Pin ---
+  // --- Click-Through Toggle ---
 
-  function togglePin() {
+  function toggleClickThrough() {
     isPinned = !isPinned;
     const pinBtn = popup.querySelector(".smp-pin-btn");
     if (pinBtn) {
       pinBtn.innerHTML = isPinned ? ICONS.pin : ICONS.pinOff;
-      pinBtn.title = isPinned ? "Unpin" : "Pin on top";
+      pinBtn.title = isPinned ? "Disable click-through" : "Enable click-through";
     }
-    popup.classList.toggle("smp-pinned", isPinned);
+    popup.classList.toggle("smp-clickthrough", isPinned);
   }
 
   // --- Drag & Snap ---

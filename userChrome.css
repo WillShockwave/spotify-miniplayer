@@ -108,8 +108,16 @@
     0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-#spotify-miniplayer-popup.smp-pinned {
-  z-index: 2147483647;
+/* Click-through mode: background passes clicks, controls stay interactive */
+#spotify-miniplayer-popup.smp-clickthrough {
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+#spotify-miniplayer-popup.smp-clickthrough button,
+#spotify-miniplayer-popup.smp-clickthrough input,
+#spotify-miniplayer-popup.smp-clickthrough .smp-progress-bar.smp-seekable {
+  pointer-events: auto;
 }
 
 #spotify-miniplayer-popup[hidden] {
@@ -432,10 +440,11 @@
   background: var(--smp-btn-hover) !important;
 }
 
-.smp-pinned .smp-pin-btn {
+.smp-clickthrough .smp-pin-btn {
   color: var(--smp-green);
   background: rgba(29, 185, 84, 0.15) !important;
   transform: rotate(45deg);
+  pointer-events: auto;
 }
 
 /* --- Auth Overlay --- */
