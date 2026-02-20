@@ -1,13 +1,24 @@
 {
+  "id": "spotify-miniplayer",
   "name": "Spotify Mini-Player",
   "description": "A draggable, pill-shaped Spotify mini-player popup with corner snapping, always-on-top pinning, and multiple control modes.",
   "version": "1.0.0",
   "author": "willv",
-  "style": "userChrome.css",
-  "JS": [
-    "JS/spotify-api.js",
-    "JS/spotify-miniplayer.js"
-  ],
+  "style": {
+    "chrome": "userChrome.css"
+  },
+  "scripts": {
+    "JS/spotify-api.uc.js": {
+      "name": "Spotify API",
+      "description": "Handles Spotify Web API authentication and requests.",
+      "include": ["chrome://browser/content/browser.xhtml"]
+    },
+    "JS/spotify-miniplayer.uc.js": {
+      "name": "Spotify Mini-Player UI",
+      "description": "Main mini-player popup, drag/snap, and controls.",
+      "include": ["chrome://browser/content/browser.xhtml"]
+    }
+  },
   "image": "",
   "preferences": "preferences.json"
 }
